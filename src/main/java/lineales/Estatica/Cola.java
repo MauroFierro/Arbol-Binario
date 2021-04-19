@@ -11,20 +11,18 @@ public class Cola {
         this.fin=0;
     }
     
-    /* Coloca un elemento en la cola */
+    /* Coloca un elemento al final de la cola. Devuelve verdadero si el elemento se pudo agregar en la estructura
+y falso en caso contrario. */
     public boolean poner(Object entrada){
-        boolean estado;
-        if(fin==tamanio)
+        boolean estado=true;
+        if((this.fin+1)%tamanio==this.frente){
             estado=false;
-        /* Cuando pone un elemento en la cola, lo hace en la posicion fin y luego avanza */
-        else{
-            arreglo[this.fin%tamanio]=entrada;
-            this.fin++;
-            estado=true;
-        }
+        }else{
+            this.arreglo[this.fin]=entrada;
+            this.fin=(this.fin+1)%tamanio;      
+        }        
         return estado;
     }
-    
     // Saca un elemento de la cola a no ser que este vacía
     public boolean sacar(){
         boolean exito=true;
@@ -51,12 +49,7 @@ public class Cola {
     
     // Devuelve True si la cola no tiene elementos y falso en caso contrario
     public boolean esVacia(){
-        boolean vacio;
-        if(this.frente==this.fin)
-            vacio=true;
-        else
-            vacio=false;
-        return vacio;
+        return this.frente==this.fin;
     }
     
     // Se encarga de Vaciar la Cola 5
@@ -66,6 +59,7 @@ public class Cola {
            this.frente++;
        }
     }    
+   // Se encarga de clonar una Cola
    public Cola clone(){ 
        //Creo una nueva Cola para almacenar la copia
        Cola arregloCola=new Cola();
@@ -81,17 +75,16 @@ public class Cola {
        }
        return arregloCola;
     }
+   // Solo se utiliza este metodo durante el testeo del programa, una vez finalizado debe ponerse Privado.
    public String toString(){
         int frenteAux=this.frente, finAux=this.fin;
         String valor="[";
         if(!esVacia()){
             while(frenteAux!=finAux){
                 valor=valor+this.arreglo[frenteAux];
-                frenteAux++;
+                frenteAux=(frenteAux+1)%tamanio;
                 if(frenteAux!=finAux)
                     valor=valor+",";
-                if(frenteAux+1==this.tamanio)
-                   frenteAux=(this.frente+1)%this.tamanio;   
             }
         }
         return valor+"]";
